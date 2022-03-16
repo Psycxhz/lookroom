@@ -3,7 +3,7 @@ import React from "react";
 export default class News extends React.Component{
     render(){
         return(
-            <div>home子组件</div>
+            <div>消息</div>
         )
     }
 }
