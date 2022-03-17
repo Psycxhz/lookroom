@@ -3,7 +3,7 @@ import React from "react";
 export default class HouseList extends React.Component{
     render(){
         return(
-            <div>城市列表</div>
+            <div>找房列表</div>
         )
     }
 }
