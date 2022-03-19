@@ -9,5 +9,9 @@
 }
 
 .home {
+    /* background-color: #fff; */
     padding-bottom: 50px;
+}
+.home .tab{
+    background-color: #fff;
 }

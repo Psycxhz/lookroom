@@ -2,7 +2,7 @@ import React from "react";
 // 导入路由
 import { Route, Routes,useLocation,useNavigate,Link} from "react-router-dom";
 // 导入TabBar组件
-import { TabBar } from "antd-mobile";
+import { TabBar, Grid } from "antd-mobile";
 // 导入组件自己的样式文件
 import "./index.css";
 // 导入组件
@@ -50,7 +50,7 @@ const Bottom = () => {
     ];
   
     return (
-      <TabBar activeKey={pathname} onChange={value => setRouteActive(value)}>
+      <TabBar className="tab" activeKey={pathname} onChange={value => setRouteActive(value)}>
         {tabItems.map(item => (
           <TabBar.Item key={item.path} icon={<i className={`iconfont ${item.icon}`}></i>} title={item.title} />
         ))}
