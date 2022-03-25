@@ -2,15 +2,19 @@ import React from "react";
 import { Grid, Space, Swiper, List } from 'antd-mobile'
 import { useNavigate } from "react-router-dom"
 import "./index.css"
-import axios from "axios";
-
+import { API } from "../../utils/api";
 import Nav1 from "../../assets/images/nav-1.png";
 import Nav2 from "../../assets/images/nav-2.png";
 import Nav3 from "../../assets/images/nav-3.png";
 import Nav4 from "../../assets/images/nav-4.png";
 
-
+//导入城市页面顶部
 import SearchHeader from "../../components/SearchHeader";
+// 导入BASE_URL
+import { BASE_URL } from "../../utils/url";
+
+// 导入utils中获取当前定位城市的方法
+import { getCurrentCity } from "../../utils";
 
 // 导航菜单的数据
 const navs = [
@@ -30,7 +34,7 @@ const navs = [
         id: 2,
         img: Nav3,
         title: "地图找房",
-        path: "/home/map",
+        path: "/map",
     },
     {
         id: 3,
@@ -70,7 +74,7 @@ export default class index extends React.Component {
     }
     //获取轮播图
     async getSwiper() {
-        const { data } = await axios.get("http://localhost:8080/home/swiper")
+        const { data } = await API.get("/home/swiper")
         this.setState({
             swiperdata: data.body,
             isSwiper: true
@@ -88,7 +92,7 @@ export default class index extends React.Component {
                                 console.log(index);
                             }}
                         >
-                            <img src={`http://localhost:8080${item.imgSrc}`} alt=""></img>
+                            <img src={BASE_URL+item.imgSrc} alt=""></img>
                         </div>
                     </Swiper.Item>
                 ))}
@@ -97,7 +101,7 @@ export default class index extends React.Component {
     }
     //获取租房信息
     async getGroup() {
-        const { data } = await axios.get("http://localhost:8080/home/groups", {
+        const { data } = await API.get("/home/groups", {
             params: {
                 area: "AREA|88cff55c-aaa4-e2e0"
             }
@@ -117,7 +121,7 @@ export default class index extends React.Component {
                                 <p className="title">{item.title}</p>
                                 <span className="info">{item.desc}</span>
                             </div>
-                            <img src={"http://localhost:8080" + item.imgSrc} alt="" />
+                            <img src={BASE_URL + item.imgSrc} alt="" />
                         </Grid.Item>
                     )
                 })}
@@ -126,7 +130,7 @@ export default class index extends React.Component {
     }
     //获取资讯数据
     async getNews() {
-        const { data } = await axios.get("http://localhost:8080/home/news", {
+        const { data } = await API.get("/home/news", {
             params: {
                 area: "AREA%7C88cff55c-aaa4-e2e0"
             }
@@ -143,7 +147,7 @@ export default class index extends React.Component {
                     <div className="imgWrap">
                         <img
                             className="img"
-                            src={`http://localhost:8080${item.imgSrc}`}
+                            src={BASE_URL+item.imgSrc}
                             alt=""
                         />
                     </div>
@@ -163,15 +167,10 @@ export default class index extends React.Component {
         this.getSwiper()
         this.getGroup()
         this.getNews()
-        const curCity = new window.BMapGL.LocalCity();
-        curCity.get(async (res) => {
-            console.log("当前城市信息：", res);
-            const result = await axios.get(
-                `http://localhost:8080/area/info?name=${res.name}`
-            );
-            this.setState({
-                curCityName: result.data.body.label,
-            });
+        //获取当前城市信息
+        const curCity = await getCurrentCity();
+        this.setState({
+          curCityName: curCity.label,
         });
     }
     render() {

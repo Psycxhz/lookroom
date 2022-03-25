@@ -1,3 +1,9 @@
 .map{
     height: 100%;
 }
+#container{
+    height: 100%;
+}
+.map .loading{
+    z-index: 1;
+}
