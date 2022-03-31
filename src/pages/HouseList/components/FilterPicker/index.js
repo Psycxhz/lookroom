@@ -22,7 +22,7 @@ export default class FilterPicker extends Component {
                 <FilterFooter
                     cancelText="取消"
                     okText="确定"
-                    onCancel={() => onCancel()}
+                    onCancel={() => onCancel(type)}
                     onOk={() => onOk(type,value)} 
                 />
             </>

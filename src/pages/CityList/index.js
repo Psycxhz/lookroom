@@ -1,11 +1,11 @@
 import React from "react";
-import { NavBar,Toast } from 'antd-mobile'
 import "./index.css"
 import { List, AutoSizer } from "react-virtualized";
 import { API } from "../../utils/api";
 
 import { getCurrentCity } from "../../utils";
 import Back from "../../components/NavHeader"
+import ChangeCity from "./components/ChangeCity"
 // 数据格式化的方法
 const formatCityList = (list) => {
   const cityList = {};
@@ -104,26 +104,11 @@ export default class CityList extends React.Component {
       <div key={key} style={style} className="city">
         <div className="title">{formatCityIndex(letter)}</div>
         {cityList[letter].map((item) => (
-          <div
-            className="name"
-            key={item.value}
-            onClick={() => this.changeCity(item)}
-          >
-            {item.label}
-          </div>
+          <ChangeCity key={item.value} item = {item} HOUSE_CITY = {HOUSE_CITY} />
         ))}
       </div>
     );
   };
-  //切换城市
-  changeCity({label,value}){
-    if (HOUSE_CITY.indexOf(label) > -1) {
-      // 有
-      localStorage.setItem("look_room", JSON.stringify({ label, value }));
-    } else {
-      Toast.show("该城市暂无房源数据");
-    }
-  }
   // 封装渲染右侧索引列表的方法
   renderCityIndex() {
     const { cityIndex, activeIndex } = this.state;

@@ -1,10 +1,19 @@
 import React from "react";
-import PropTypes, { func } from "prop-types";
+import PropTypes from "prop-types";
 import styles from "./index.module.css";
+import {useNavigate} from "react-router-dom"
 
-function HouseItem({ src, title, desc, tags, price, onClick, style }) {
+function HouseItem({ src, title, desc, tags, price, route, style }) {
+  const history = useNavigate();
+  function godetails(){
+    if(route){
+      history(route)
+    }else{
+      console.log("暂没功能");
+    }
+  }
   return (
-    <div className={styles.house} onClick={onClick} style={style}>
+    <div className={styles.house} onClick={godetails} style={style} >
       <div className={styles.imgWrap}>
         <img className={styles.img} src={src} alt="" />
       </div>

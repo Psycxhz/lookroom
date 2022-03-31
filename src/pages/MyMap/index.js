@@ -183,6 +183,7 @@ export default class MyMap extends React.Component {
         return this.state.houseList.map((item) => (
             <HouseItem
               key={item.houseCode}
+              route = {`/detail/${item.houseCode}`}
               src={BASE_URL + item.houseImg}
               title={item.title}
               desc={item.desc}
