@@ -9,12 +9,20 @@ import {
 import Home from "./pages/Home";
 // import CityList from "./pages/CityList";
 // import MyMap from "./pages/MyMap";
+// 路由访问控制组件 
+import {isAuth} from "./utils/auth"
 
 const CityList = lazy(() => import("./pages/CityList"));
 const MyMap = lazy(() => import("./pages/MyMap"));
 const HouseDetail = lazy(() => import("./pages/Housedetail"));
 const Login = lazy(() => import("./pages/Login"));
 const Registe = lazy(() => import("./pages/Registe"));
+
+const RentAdd = lazy(() => import("./pages/Rent/Add"));
+const RentSearch = lazy(() => import("./pages/Rent/Search"));
+const Rent = lazy(() => import("./pages/Rent"));
+
+
 
 export default class App extends React.Component {
   render() {
@@ -31,6 +39,11 @@ export default class App extends React.Component {
             <Route path="/detail/:id" element={<HouseDetail />} />
             <Route path="/login" element={<Login />} />
             <Route path="/registe" element={<Registe />} />
+
+            {/* 配置登录后，才能访问的页面 */}
+            <Route path="/rent/add" element={isAuth()===true?<RentAdd /> :<Navigate to="/login" replace />}/>
+            <Route path="/rent/*" element={isAuth()===true?<Rent /> :<Navigate to="/login" replace />}/>
+            <Route path="/rent/search" element={isAuth()===true?<RentSearch /> :<Navigate to="/login" replace />}/>
           </Routes>
         </div>
         </Suspense>

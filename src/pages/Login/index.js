@@ -1,6 +1,6 @@
 import React from "react";
 import { Space, Toast } from "antd-mobile";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate,useLocation  } from "react-router-dom";
 import NavHeader from "../../components/NavHeader";
 
 // 导入withFormik
@@ -16,7 +16,6 @@ const REG_UNAME = /^[a-zA-Z_\d]{5,8}$/;
 const REG_PWD = /^[a-zA-Z_\d]{5,12}$/;
 
 const Login = (props)=>{
-  const history = useNavigate()
   return (
     <div className={styles.root}>
       {/* 顶部导航 */}
@@ -70,8 +69,9 @@ const Login = (props)=>{
 }
 const MyComponent = props => {
   const history = useNavigate()
+  const location = useLocation()
   return (
-      <MyEnhancedForm history={ history }/>
+      <MyEnhancedForm history={ history } location={location} />
   )
 }
 const MyEnhancedForm = withFormik({
@@ -93,19 +93,17 @@ const MyEnhancedForm = withFormik({
     // 表单的提交事件
     handleSubmit: async (values, { props }) => {
       // 获取账号和密码
+      console.log(props);
       const { username, password } = values;
       const res = await API.post("/user/login", {
         username,
         password,
       });
-      console.log(res.data);
       const { status, body, description } = res.data;
-  
       if (status === 200) {
-        console.log(body.token);
         // 登陆成功
         localStorage.setItem("look_token", body.token);
-        props.history(-1);
+        props.history(props.location.state.datas)
       } else {
         // 登陆失败
         Toast.show({content:description});

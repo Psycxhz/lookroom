@@ -99,9 +99,9 @@ const MyEnhancedForm = withFormik({
       const { status, description } = res.data;
       
       if (status === 200) {
-          props.history(-1);
+          props.history("/login");
       } else {
-        // 登陆失败
+        //注册失败
         Toast.show({content:description});
       }
     },

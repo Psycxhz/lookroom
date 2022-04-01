@@ -1,0 +1,10 @@
+.rootthree .adm-form{
+    margin-top: 40px;
+}
+.rootthree .adm-list-item-title .adm-form-item-label{
+    font-size: 18px;
+    font-weight: bold;
+}
+.rootthree .adm-space .adm-space-item{
+    flex: 1;
+}

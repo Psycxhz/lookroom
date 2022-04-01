@@ -8,10 +8,6 @@ import { Grid, Button, Modal } from "antd-mobile";
 
 import { isAuth, getToken, removeToken } from "../../utils/auth";
 
-import NavHeader from "../../components/NavHeader";
-import HouseItem from "../../components/HouseItem";
-import NoHouse from "../../components/NoHouse";
-
 import styles from "./index.module.css";
 // 菜单数据
 const menus = [
@@ -30,6 +26,8 @@ const menus = [
 const DEFAULT_AVATAR = BASE_URL + "/img/profile/avatar.png";
 function Profile() {
   const history = useNavigate();
+  const urlParams = new URL(window.location.href);
+  const pathname = urlParams?.pathname;
   const [state, setState] = useState({
     // 是否登录
     isLogin: isAuth(),
@@ -45,11 +43,7 @@ function Profile() {
       return;
     }
     // 发送请求，获取个人资料
-    const res = await API.get("/user", {
-      headers: {
-        authorization: getToken(),
-      },
-    });
+    const res = await API.get("/user");
     if (res.data.status === 200) {
       const { avatar, nickname } = res.data.body;
       setState({
@@ -135,7 +129,7 @@ function Profile() {
                   type="primary"
                   size="small"
                   inline
-                  onClick={() => history("/login")}
+                  onClick={() => history("/login",{state:{datas:pathname}})}
                 >
                   去登录
                 </Button>

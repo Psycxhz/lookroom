@@ -7,6 +7,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import { BASE_URL } from "../../utils/url";
 import { API } from "../../utils/api";
+import { isAuth } from "../../utils/auth";
 import styles from "./index.module.css";
 import "./index.css";
 
@@ -100,7 +101,9 @@ function HouseDetail() {
   const [data, setdata] = useState(state);
   const [visible, setVisible] = useState(false);
   const { id } = useParams();
-  const history = useNavigate()
+  const urlParams = new URL(window.location.href);
+  const pathname = urlParams?.pathname;
+  const history = useNavigate();
   async function getHouseDetail() {
     // 开启loading
     const res = await API.get(`/houses/${id}`);
@@ -196,16 +199,46 @@ function HouseDetail() {
     });
   }
   async function handleFavorite() {
-    const isLogin = false;
+    const isLogin = isAuth();
     if (!isLogin) {
       // 未登录
       const result = await Modal.confirm({
-        content: '未登录请登录',
-      })
+        content: "未登录请登录",
+      });
       if (result) {
-        history('/login')
+        history("/login", { state: { datas: pathname } });
       } else {
-        Toast.show({ content: '点击了取消', position: 'bottom' })
+        Toast.show({ content: "已取消", position: "bottom" });
+      }
+    }
+    if (isFavorite) {
+      // 已收藏，应该删除收藏
+      const res = await API.delete(`/user/favorites/${id}`);
+      // console.log(res);
+      setdata({
+        ...data,
+        isFavorite: false,
+      });
+      if (res.data.status === 200) {
+        // 提示用户取消收藏
+        Toast.show({content:"已取消收藏"});
+      } else {
+        // token超时
+        Toast.show({content:"登录超时，请重新登录"});
+      }
+    } else {
+      // 未收藏，应该添加收藏
+      const res = await API.post(`/user/favorites/${id}`);
+      if (res.data.status === 200) {
+        // 提示用户收藏成功
+        Toast.show({content:"已收藏"});
+        setdata({
+          ...data,
+          isFavorite: true,
+        });
+      } else {
+        // token超时
+        Toast.show({content:"登录超时，请重新登录"});
       }
     }
   }
