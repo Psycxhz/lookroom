@@ -3,8 +3,6 @@ import React from "react";
 import { Route, Routes,useLocation,useNavigate,Link} from "react-router-dom";
 // 导入TabBar组件
 import { TabBar, Grid } from "antd-mobile";
-// 导入组件自己的样式文件
-import "./index.css";
 // 导入组件
 import Index from "../Index";
 import HouseList from "../HouseList";
@@ -14,7 +12,8 @@ import Profile from "../Profile";
 // const HouseList = lazy(() => import("../HouseList"));
 // const News = lazy(() => import("../News"));
 // const Profile = lazy(() => import("../Profile"));
-
+// 导入组件自己的样式文件
+import "./index.css";
 
 // TabBar.Item数据
 const Bottom = () => {
